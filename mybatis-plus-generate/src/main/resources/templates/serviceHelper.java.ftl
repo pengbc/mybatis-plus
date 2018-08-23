@@ -1,4 +1,4 @@
-package ${package.ServiceImpl};
+package ${package.ServiceHelper};
 
 import ${package.Entity}.${entity};
 import ${package.Mapper}.${table.mapperName};
@@ -17,12 +17,12 @@ import org.slf4j.LoggerFactory;
  */
 @Service
 <#if kotlin>
-open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName}, ${entity}>(), ${table.serviceName} {
+open class ${table.serviceHelperName} : ${superServiceImplClass}<${table.mapperName}, ${entity}>(), ${table.serviceName} {
 
 }
 <#else>
-public class ${table.serviceImplName}  implements ${table.serviceName} {
-private static final Logger logger = LoggerFactory.getLogger(${table.serviceImplName}.class);
+public class ${table.serviceHelperName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}>   {
+private static final Logger logger = LoggerFactory.getLogger(${table.serviceHelperName}.class);
 
 }
 </#if>

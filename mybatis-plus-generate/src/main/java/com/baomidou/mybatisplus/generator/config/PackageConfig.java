@@ -51,6 +51,10 @@ public class PackageConfig {
      */
     private String serviceImpl = "service.impl";
     /**
+     * Service Helper包名
+     */
+    private String serviceHelper = "service.impl.helper";
+    /**
      * Mapper包名
      */
     private String mapper = "mapper";
@@ -143,4 +147,12 @@ public class PackageConfig {
         return this;
     }
 
+    public String getServiceHelper() {
+        return serviceHelper;
+    }
+
+    public PackageConfig setServiceHelper(String serviceHelper) {
+        this.serviceHelper = serviceHelper;
+        return this;
+    }
 }

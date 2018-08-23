@@ -78,6 +78,7 @@ public class GlobalConfig {
     private String xmlName;
     private String serviceName;
     private String serviceImplName;
+    private String serviceHelperName;
     private String controllerName;
     /**
      * 指定生成的主键的ID类型
@@ -101,6 +102,16 @@ public class GlobalConfig {
         this.outputDir = outputDir;
         return this;
     }
+
+    public String getServiceHelperName() {
+        return serviceHelperName;
+    }
+
+    public GlobalConfig setServiceHelperName(String serviceHelperName) {
+        this.serviceHelperName = serviceHelperName;
+        return this;
+    }
+
 
     public boolean isFileOverride() {
         return fileOverride;

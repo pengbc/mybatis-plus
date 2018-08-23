@@ -44,7 +44,6 @@ import com.baomidou.mybatisplus.toolkit.StringUtils;
  * @since 2016-08-30
  */
 public class AutoGenerator {
-
     private static final Logger logger = LoggerFactory.getLogger(AutoGenerator.class);
     /**
      * 配置信息

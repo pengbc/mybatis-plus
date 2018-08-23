@@ -30,13 +30,15 @@ public class ConstVal {
     public static final String ENTITY = "Entity";
     public static final String SERVICE = "Service";
     public static final String SERVICEIMPL = "ServiceImpl";
+    public static final String SERVICEHELPER = "ServiceHelper";
     public static final String MAPPER = "Mapper";
     public static final String XML = "Xml";
     public static final String CONTROLLER = "Controller";
 
     public static final String ENTITY_PATH = "entity_path";
     public static final String SERVICE_PATH = "service_path";
-    public static final String SERVICEIMPL_PATH = "serviceimpl_path";
+    public static final String SERVICEIMPL_PATH = "serviceImpl_path";
+    public static final String SERVICEHELPER_PATH = "serviceHelper_path";
     public static final String MAPPER_PATH = "mapper_path";
     public static final String XML_PATH = "xml_path";
     public static final String CONTROLLER_PATH = "controller_path";
@@ -55,6 +57,7 @@ public class ConstVal {
     public static final String TEMPLATE_XML = "/templates/mapper.xml";
     public static final String TEMPLATE_SERVICE = "/templates/service.java";
     public static final String TEMPLATE_SERVICEIMPL = "/templates/serviceImpl.java";
+    public static final String TEMPLATE_SERVICEHELPER = "/templates/serviceHelper.java";
     public static final String TEMPLATE_CONTROLLER = "/templates/controller.java";
 
     public static final String VM_LOADPATH_KEY = "file.resource.loader.class";

@@ -249,6 +249,7 @@ public class ConfigBuilder {
         packageInfo.put(ConstVal.XML, joinPackage(config.getParent(), config.getXml()));
         packageInfo.put(ConstVal.SERVICE, joinPackage(config.getParent(), config.getService()));
         packageInfo.put(ConstVal.SERVICEIMPL, joinPackage(config.getParent(), config.getServiceImpl()));
+        packageInfo.put(ConstVal.SERVICEHELPER, joinPackage(config.getParent(), config.getServiceHelper()));
         packageInfo.put(ConstVal.CONTROLLER, joinPackage(config.getParent(), config.getController()));
 
         // 生成路径信息
@@ -267,6 +268,9 @@ public class ConfigBuilder {
         }
         if (StringUtils.isNotEmpty(template.getServiceImpl())) {
             pathInfo.put(ConstVal.SERVICEIMPL_PATH, joinPath(outputDir, packageInfo.get(ConstVal.SERVICEIMPL)));
+        }
+        if (StringUtils.isNotEmpty(template.getServiceHelper())) {
+            pathInfo.put(ConstVal.SERVICEHELPER_PATH, joinPath(outputDir, packageInfo.get(ConstVal.SERVICEHELPER)));
         }
         if (StringUtils.isNotEmpty(template.getController())) {
             pathInfo.put(ConstVal.CONTROLLER_PATH, joinPath(outputDir, packageInfo.get(ConstVal.CONTROLLER)));
@@ -363,6 +367,11 @@ public class ConfigBuilder {
             } else {
                 tableInfo.setServiceImplName(tableInfo.getEntityName() + ConstVal.SERVICEIMPL);
             }
+            if (StringUtils.isNotEmpty(globalConfig.getServiceHelperName())) {
+                tableInfo.setServiceHelperName(String.format(globalConfig.getServiceHelperName(), tableInfo.getEntityName()));
+            } else {
+                tableInfo.setServiceHelperName(tableInfo.getEntityName() + ConstVal.SERVICEHELPER);
+            }
             if (StringUtils.isNotEmpty(globalConfig.getControllerName())) {
                 tableInfo.setControllerName(String.format(globalConfig.getControllerName(), tableInfo.getEntityName()));
             } else {
@@ -446,13 +455,24 @@ public class ConfigBuilder {
         try {
             String tablesSql = dbQuery.tablesSql();
             if (DbType.POSTGRE_SQL == dbQuery.dbType()) {
-                tablesSql = String.format(tablesSql, dataSourceConfig.getSchemaname());
+                String schema = dataSourceConfig.getSchemaname();
+                if (schema == null) {
+                    schema = "public";//pg默认schema=public
+                    dataSourceConfig.setSchemaname(schema);
+                }
+                tablesSql = String.format(tablesSql, schema);
             }
             //oracle数据库表太多，出现最大游标错误
             else if (DbType.ORACLE == dbQuery.dbType()) {
+                String schema = dataSourceConfig.getSchemaname();
+                if (schema == null) {//oracle默认用户的schema=username
+                    schema = dataSourceConfig.getUsername().toUpperCase();
+                    dataSourceConfig.setSchemaname(schema);
+                }
+                tablesSql = String.format(tablesSql, schema);
                 if (isInclude) {
                     StringBuilder sb = new StringBuilder(tablesSql);
-                    sb.append(" WHERE ").append(dbQuery.tableName()).append(" IN (");
+                    sb.append(" AND ").append(dbQuery.tableName()).append(" IN (");
                     for (String tbname : config.getInclude()) {
                         sb.append("'").append(tbname.toUpperCase()).append("',");
                     }
@@ -460,7 +480,7 @@ public class ConfigBuilder {
                     tablesSql = sb.toString();
                 } else if (isExclude) {
                     StringBuilder sb = new StringBuilder(tablesSql);
-                    sb.append(" WHERE ").append(dbQuery.tableName()).append(" NOT IN (");
+                    sb.append(" AND ").append(dbQuery.tableName()).append(" NOT IN (");
                     for (String tbname : config.getExclude()) {
                         sb.append("'").append(tbname.toUpperCase()).append("',");
                     }
@@ -563,6 +583,8 @@ public class ConfigBuilder {
             String tableFieldsSql = dbQuery.tableFieldsSql();
             if (DbType.POSTGRE_SQL == dbQuery.dbType()) {
                 tableFieldsSql = String.format(tableFieldsSql, dataSourceConfig.getSchemaname(), tableInfo.getName());
+            } else if (DbType.ORACLE == dbQuery.dbType()) {
+                tableFieldsSql = String.format(tableFieldsSql.replace("#schema", dataSourceConfig.getSchemaname()), tableInfo.getName());
             } else {
                 tableFieldsSql = String.format(tableFieldsSql, tableInfo.getName());
             }

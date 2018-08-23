@@ -10,8 +10,12 @@ import com.baomidou.mybatisplus.annotations.Version;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-#end
 
+#end
+import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 /**
  * <p>
  * $!{table.comment}
@@ -126,18 +130,20 @@ public class ${entity} implements Serializable {
     }
 
 #end
-#if(!${entityLombokModel})
+
+    public int compareTo(Object obj) {
+        return CompareToBuilder.reflectionCompare(this, obj);
+        }
+    @Override
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
+        }
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+        }
     @Override
     public String toString() {
-        return "${entity}{" +
-#foreach($field in ${table.fields})
-#if($!{velocityCount}==1)
-        "${field.propertyName}=" + ${field.propertyName} +
-#else
-        ", ${field.propertyName}=" + ${field.propertyName} +
-#end
-#end
-        "}";
-    }
-#end
+        return ReflectionToStringBuilder.toString(this);
+        }
 }

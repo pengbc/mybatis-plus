@@ -30,6 +30,7 @@ public class TemplateConfig {
     private String service = ConstVal.TEMPLATE_SERVICE;
 
     private String serviceImpl = ConstVal.TEMPLATE_SERVICEIMPL;
+    private String serviceHelper = ConstVal.TEMPLATE_SERVICEHELPER;
 
     private String mapper = ConstVal.TEMPLATE_MAPPER;
 
@@ -62,6 +63,14 @@ public class TemplateConfig {
     public TemplateConfig setServiceImpl(String serviceImpl) {
         this.serviceImpl = serviceImpl;
         return this;
+    }
+
+    public String getServiceHelper() {
+        return serviceHelper;
+    }
+
+    public void setServiceHelper(String serviceHelper) {
+        this.serviceHelper = serviceHelper;
     }
 
     public String getMapper() {
